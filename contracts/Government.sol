@@ -77,7 +77,7 @@ contract Government {
 
   /*
   * @dev                        allows the owner of the contract to add a mileage category
-  * @param    _category         the category of the car
+  * @param    _name             the name of the category for the car
   * @param    _price            the price of the category per metre
   */
   function addCategory(string _name, uint _price) public isOwner {
@@ -95,7 +95,7 @@ contract Government {
 
   /*
   * @dev                        returns the mileage cost for a particular category of vehicle
-  * @param    _category         the category of the car
+  * @param    _categoryID       the category ID of the car
   */
   function getPrice(uint _categoryID) public view returns (string, uint) {
     return (mileageCost[_categoryID].name,
