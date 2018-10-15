@@ -6,7 +6,7 @@ export const Header = () => (
         {/* Header */}
         <header id="header" className="alt">
             <h1>
-                <Link to="/">SecuriShare</Link>
+                <Link to="/">Penny</Link>
             </h1>
             <nav>
                 <a href="#menu">Menu</a>
@@ -21,9 +21,6 @@ export const Header = () => (
                 <ul className="links">
                     <li>
                         <Link to="/">Home</Link>
-                    </li>
-                    <li>
-                        <Link to="/vehicle">Vehicle Details</Link>
                     </li>
 
                     <li>

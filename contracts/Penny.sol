@@ -1,12 +1,13 @@
 pragma solidity ^0.4.23;
 
-contract Government {
+contract Penny {
 
   /***********************************/
   /******* CONTRACT ATTRIBUTES *******/
   /***********************************/
 
   struct Location {
+    address owner;
     uint locationID;
     uint longitude;
     uint latitude;
@@ -19,17 +20,28 @@ contract Government {
     uint price;
   }
 
+  struct Car {
+    uint carID;
+    string registration;
+    uint mileageID;
+    address owner;
+  }
+
   address public master;
   uint public balance;
 
   uint public noLocations;
   uint public noCategories;
+  uint public noCars;
 
   mapping(uint => MileageCategory) public mileageCost;
   mapping(uint => Location) public allLocations;
+  mapping(address => Car) public allCars;
 
   uint[] mileageIDs;
   uint[] locationIDs;
+  address[] carOwners;
+
 
   /***********************************/
   /************* MODIFIERS ***********/
@@ -52,6 +64,7 @@ contract Government {
     balance = 0;
     noLocations = 0;
     noCategories = 0;
+    noCars = 0;
   }
 
   /*
@@ -65,6 +78,7 @@ contract Government {
     uint locationIDNumber = noLocations;
 
     Location memory newLocation;
+    newLocation.owner = msg.sender;
     newLocation.locationID = locationIDNumber;
     newLocation.longitude = _longitude;
     newLocation.latitude = _latitude;
@@ -91,6 +105,26 @@ contract Government {
     noCategories = noCategories + 1;
     mileageCost[categoryIDNumber] = newMileageCategory;
     mileageIDs.push(categoryIDNumber);
+  }
+
+
+  /*
+  * @dev                        allows the owner of the contract to add a mileage category
+  * @param    _registration     the registration of the car
+  * @param    _mileageID        the mileage category of the car
+  */
+  function addCar(string _registration, uint _mileageID) public isOwner {
+    uint carIDNumber = noCars;
+
+    Car memory newCar;
+    newCar.carID = carIDNumber;
+    newCar.registration = _registration;
+    newCar.owner = msg.sender;
+    newCar.mileageID = _mileageID;
+
+    noCars = noCars + 1;
+    allCars[msg.sender] = newCar;
+    carOwners.push(msg.sender);
   }
 
   /*

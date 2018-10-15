@@ -53,27 +53,28 @@ export const Home = () => (
                     <p>This proof-of-concept was created as part of the Hedera Hashgraph Hackathon in London in October 2018.</p>
 
                     <section className="features">
+
+
+                        <article>
+                            <h3 className="major">Peter Jones</h3>
+                            <p>Responsible for Business development.
+
+                            </p>
+                        </article>
+
+                        <article>
+                            <h3 className="major">Steven Reid</h3>
+                            <p>Resonsible for Java development.
+                                <span> </span>
+                                <a href="https://github.com/sr73674">GitHub</a>
+                            </p>
+                        </article>
+
                         <article>
                             <h3 className="major">Matthew Morrison</h3>
-                            <p>Responsible for smart contract and front-end development.
+                            <p>Responsible for Smart Contract development.
                                 <span> </span>
                                 <a href="https://github.com/matthewsmorrison">GitHub</a>
-                            </p>
-                        </article>
-
-                        <article>
-                            <h3 className="major">[XX]</h3>
-                            <p>[XX]
-                                <span> </span>
-                                <a href="/">GitHub</a>
-                            </p>
-                        </article>
-
-                        <article>
-                            <h3 className="major">[XX]</h3>
-                            <p>[XX]
-                                <span> </span>
-                                <a href="/">GitHub</a>
                             </p>
                         </article>
 
