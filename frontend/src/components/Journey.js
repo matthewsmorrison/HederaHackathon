@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios'
 
 export class Journey extends React.Component {
   constructor(props) {
@@ -6,11 +7,13 @@ export class Journey extends React.Component {
     this.state = {
       balance: 100,
       maxJourney: 0,
-      longitude: 0,
-      latitude: 0,
+      longitude: 51.51867709999999789261,
+      latitude: -0.07843719999999999859,
       distance: 0,
       type: 'Diesel',
-      cost: 0.000014,
+      cost: 0.14,
+      api: 'https://pure-hamlet-28523.herokuapp.com/user/balance',
+      exchangeRate: 8.33333333,
     };
   }
 
@@ -44,35 +47,49 @@ export class Journey extends React.Component {
         return d;
       }
 
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        position => {
+    var latChange = 0.00001
+    var lonChange = 0.000001
 
-          var newDistance = calculateDistance(this.state.latitude, this.state.longitude, position.coords.latitude, position.coords.longitude);
-          var newMaxJourney = (this.state.balance / this.state.cost)/1000;
-          var newBalance = this.state.balance - (newDistance * this.state.cost);
+    var newDistance = calculateDistance(this.state.latitude, this.state.longitude, this.state.latitude + latChange,this.state.longitude + lonChange);
+    var newMaxJourney = (this.state.balance / this.state.cost)/1000;
 
-          this.setState({
-            balance: newBalance,
-            maxJourney: newMaxJourney,
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
-            distance: this.state.distance + newDistance
-          })
-        }
-      )
-    } else {
-      error => console.log(error)
-    }
+    axios.get(this.state.api, { crossdomain: true })
+    .then(response =>
+      this.setState({
+        balance: response.data
+      })
+    )
+
+
+    var url = 'https://pure-hamlet-28523.herokuapp.com/transfer?amount=' + (newDistance * this.state.cost);
+
+    axios.get('https://pure-hamlet-28523.herokuapp.com/transfer?amount=1', { crossdomain: true })
+    .then(response =>
+      console.log('success')
+    )
+
+    this.setState({
+      maxJourney: newMaxJourney,
+      latitude: this.state.latitude - latChange,
+      longitude: this.state.longitude + lonChange,
+      distance: this.state.distance + newDistance
+    })
   }
 
-  componentWillUpdate () {
-    this.getGeoLocation();
-  }
 
   componentDidMount() {
-    this.getGeoLocation();
+    axios.get(this.state.api, { crossdomain: true })
+    .then(response =>
+      this.setState({
+        balance: response.data
+      })
+    )
+    this.interval = setInterval(() => this.getGeoLocation(), 2000);
   }
+
+componentWillUnmount() {
+  clearInterval(this.interval);
+}
 
   render() {
     return (
@@ -99,6 +116,11 @@ export class Journey extends React.Component {
                   <tr>
                     <td>Current Balance (HBAR)</td>
                     <td style={{textAlign:"center"}}>{this.state.balance.toFixed(20)}</td>
+                  </tr>
+
+                  <tr>
+                    <td>Current Balance (USD)</td>
+                    <td style={{textAlign:"center"}}>{(this.state.balance / this.state.exchangeRate).toFixed(20)}</td>
                   </tr>
 
                   <tr>
@@ -134,6 +156,11 @@ export class Journey extends React.Component {
                   <tr>
                     <td>Total Cost (HBAR)</td>
                     <td style={{textAlign:"center"}}>{(this.state.distance * this.state.cost).toFixed(20)}</td>
+                  </tr>
+
+                  <tr>
+                    <td>Total Cost (USD)</td>
+                    <td style={{textAlign:"center"}}>{((this.state.distance * this.state.cost)/this.state.exchangeRate).toFixed(20)}</td>
                   </tr>
 
                 </tbody>

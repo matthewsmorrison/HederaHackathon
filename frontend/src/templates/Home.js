@@ -5,9 +5,9 @@ export const Home = () => (
         {/* Banner */}
         <section id="banner">
             <div className="inner">
-                <div className="logo"><span className="icon fa-diamond"></span></div>
+
                 <h2>Penny</h2>
-                <p>Next-Generation Transport Infrastructure, Enabled by Hedera Hashgraph</p>
+                <p>Highway Infrastructure Micropayment Platform</p>
             </div>
         </section>
 
@@ -41,7 +41,7 @@ export const Home = () => (
                     <a className="image"><img src="images/code.jpg" alt="" /></a>
                     <div className="content">
                         <h2 className="major">100% Transparency</h2>
-                        <p>All of the smart contract code is deployed on the public Hedera Hashgraph network.</p>
+                        <p>All of the smart contract code is deployed on the public Hedera Hashgraph test network.</p>
                     </div>
                 </div>
             </section>

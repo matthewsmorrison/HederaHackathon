@@ -27,6 +27,10 @@ export const Header = () => (
                         <Link to="/journey">My Journey</Link>
                     </li>
 
+                    <li>
+                        <Link to="/government">Government View</Link>
+                    </li>
+
                 </ul>
                 <Link to="#" className="close">Close</Link>
             </div>
