@@ -4,11 +4,13 @@ export class Journey extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      balance: 100,
+      maxJourney: 0,
       longitude: 0,
       latitude: 0,
       distance: 0,
       type: 'Diesel',
-      cost: 0.00000014,
+      cost: 0.000014,
     };
   }
 
@@ -47,8 +49,12 @@ export class Journey extends React.Component {
         position => {
 
           var newDistance = calculateDistance(this.state.latitude, this.state.longitude, position.coords.latitude, position.coords.longitude);
+          var newMaxJourney = (this.state.balance / this.state.cost)/1000;
+          var newBalance = this.state.balance - (newDistance * this.state.cost);
 
           this.setState({
+            balance: newBalance,
+            maxJourney: newMaxJourney,
             latitude: position.coords.latitude,
             longitude: position.coords.longitude,
             distance: this.state.distance + newDistance
@@ -81,7 +87,7 @@ export class Journey extends React.Component {
         <div className="wrapper">
           <div className="inner">
 
-            <h3 className="major">Key statistics about your current journey</h3>
+            <h3 className="major">Key Statistics</h3>
 
             <div className="table-wrapper">
               <table>
@@ -89,6 +95,16 @@ export class Journey extends React.Component {
                 </thead>
 
                 <tbody>
+
+                  <tr>
+                    <td>Current Balance (HBAR)</td>
+                    <td style={{textAlign:"center"}}>{this.state.balance.toFixed(20)}</td>
+                  </tr>
+
+                  <tr>
+                    <td>Max Journey (km)</td>
+                    <td style={{textAlign:"center"}}>{this.state.maxJourney.toFixed(0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</td>
+                  </tr>
 
                   <tr>
                     <td>Latitude</td>
@@ -111,12 +127,12 @@ export class Journey extends React.Component {
                   </tr>
 
                   <tr>
-                    <td>Cost Per Metre (Hadera Token)</td>
+                    <td>Cost Per Metre (HBAR)</td>
                     <td style={{textAlign:"center"}}>{this.state.cost.toFixed(20)}</td>
                   </tr>
 
                   <tr>
-                    <td>Total Cost (Hadera Token)</td>
+                    <td>Total Cost (HBAR)</td>
                     <td style={{textAlign:"center"}}>{(this.state.distance * this.state.cost).toFixed(20)}</td>
                   </tr>
 
